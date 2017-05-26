@@ -5,10 +5,8 @@
 
 (defn parse-csv-file
   [fname]
-  (with-open [file (io/reader fname)]
-    (csv/read-csv (slurp file)))) ; todo work in progress
+  (csv/read-csv (slurp fname :encoding "cp1251") :separator \;))
 
 (defn -main
-  "I don't do a whole lot ... yet."
   [& args]
-  (println "Hello, World!"))
+  (parse-csv-file "./resources/transactions.csv"))
