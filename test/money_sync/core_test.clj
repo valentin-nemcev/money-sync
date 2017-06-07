@@ -60,5 +60,5 @@
              ""                  ""}))))
 
 (deftest test-process-raws
-  (is (= (map process-row (csv-data->maps (parse-csv-file "./resources/transactions.csv")))
+  (is (= (map process-hold (csv-data->maps (parse-csv-file "./resources/transactions.csv")))
          `({:hold true} {:hold false} {:hold false} {:hold false} {:hold false} {:hold false}))))

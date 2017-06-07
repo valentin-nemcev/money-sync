@@ -13,13 +13,9 @@
        (repeat (first csv-data))
        (rest csv-data)))
 
-(defn retrieve-hold
+(defn process-hold
   [row]
-  (if (= (row "Референс проводки") "HOLD") true false))
-
-(defn process-row
-  [row]
-  {:hold (retrieve-hold row)})
+  {:hold (if (= (row "Референс проводки") "HOLD") true false)})
 
 (defn -main
   [& args]
