@@ -13,6 +13,15 @@
        (repeat (first csv-data))
        (rest csv-data)))
 
+(defn retrieve-hold
+  [row]
+  (if (= (row "Референс проводки") "HOLD") true false))
+
+(defn process-row
+  [row]
+  {:hold (retrieve-hold row)})
+
 (defn -main
   [& args]
+  ; todo not complete
   (csv-data->maps (parse-csv-file "./resources/transactions.csv")))
