@@ -1,7 +1,9 @@
 (ns money-sync.core
   (:gen-class)
   (:require [clojure.java.io :as io]
-            [clojure.data.csv :as csv]))
+            [clojure.data.csv :as csv]
+            [clj-time.core :as time.core]
+            [clj-time.format :as time.format]))
 
 (defn parse-csv-file
   [fname]
@@ -20,6 +22,10 @@
 (defn process-card-num
   [row]
   {:card-num (re-find #"^[\d+]{16}+" (row "Описание операции"))})
+
+(defn process-date
+  [row]
+  {:date (time.format/parse (time.format/formatter "dd.MM.yy") (row "Дата операции"))})
 
 (defn -main
   [& args]
