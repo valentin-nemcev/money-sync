@@ -3,7 +3,10 @@
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [org.clojure/data.csv "0.1.4"]
                  [clj-time "0.13.0"]
-                 [clojurewerkz/money "1.10.0"]]
+                 [clojurewerkz/money "1.10.0"]
+                 [pjstadig/humane-test-output "0.8.2"]]
+  :injections [(require 'pjstadig.humane-test-output)
+                (pjstadig.humane-test-output/activate!)]
   :main ^:skip-aot money-sync.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}})
