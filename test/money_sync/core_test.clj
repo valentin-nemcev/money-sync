@@ -62,3 +62,12 @@
 (deftest test-process-hold
   (is (= (map process-hold (csv-data->maps (parse-csv-file "./resources/transactions.csv")))
          `({:hold true} {:hold false} {:hold false} {:hold false} {:hold false} {:hold false}))))
+
+(deftest test-process-card-num
+  (is (= (map process-card-num (csv-data->maps (parse-csv-file "./resources/transactions.csv")))
+         `({:card-num nil}
+           {:card-num nil}
+           {:card-num "548673++++++3137"}
+           {:card-num "510126++++++6530"}
+           {:card-num nil}
+           {:card-num nil}))))

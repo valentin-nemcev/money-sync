@@ -17,6 +17,10 @@
   [row]
   {:hold (if (= (row "Референс проводки") "HOLD") true false)})
 
+(defn process-card-num
+  [row]
+  {:card-num (re-find #"^[\d+]{16}+" (row "Описание операции"))})
+
 (defn -main
   [& args]
   ; todo not complete
