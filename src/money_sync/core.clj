@@ -2,8 +2,10 @@
   (:gen-class)
   (:require [clojure.java.io :as io]
             [clojure.data.csv :as csv]
+            [clojure.string :as string]
             [clj-time.core :as time.core]
-            [clj-time.format :as time.format]))
+            [clj-time.format :as time.format]
+            [clojurewerkz.money.amounts :as money.amounts]))
 
 (defn parse-csv-file
   [fname]
@@ -26,6 +28,13 @@
 (defn process-date
   [row]
   {:date (time.format/parse (time.format/formatter "dd.MM.yy") (row "Дата операции"))})
+
+(defn process-money
+  [row]
+  (let [currency (row "Валюта")
+        income   (Double/parseDouble (string/replace (row "Приход") "," "."))
+        outcome  (Double/parseDouble (string/replace (row "Расход") "," "."))]
+    {:money (money.amounts/parse (str currency (- income outcome)))}))
 
 (defn -main
   [& args]

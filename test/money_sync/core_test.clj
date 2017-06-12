@@ -1,7 +1,8 @@
 (ns money-sync.core-test
   (:require [clojure.test :refer :all]
             [money-sync.core :refer :all]
-            [clj-time.core :as time.core]))
+            [clj-time.core :as time.core]
+            [clojurewerkz.money.amounts :as money.amounts]))
 
 (deftest parse-transactions
   (is (= (list {"Тип счёта"         "Текущий счёт",
@@ -81,3 +82,12 @@
                {:date (time.core/date-time 2017 5 20)}
                {:date (time.core/date-time 2017 5 19)})
          (map process-date (csv-data->maps (parse-csv-file "./resources/transactions.csv"))))))
+
+(deftest test-process-money
+  (is (= (list {:money (money.amounts/parse "RUR -952.00")}
+               {:money (money.amounts/parse "RUR -185.25")}
+               {:money (money.amounts/parse "RUR -1334.00")}
+               {:money (money.amounts/parse "RUR -9500.00")}
+               {:money (money.amounts/parse "RUR -7000.00")}
+               {:money (money.amounts/parse "RUR 15686.20")})
+         (map process-money (csv-data->maps (parse-csv-file "./resources/transactions.csv"))))))
