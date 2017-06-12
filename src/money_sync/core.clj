@@ -1,6 +1,7 @@
 (ns money-sync.core
   (:gen-class)
-  (:require [clojure.java.io :as io]
+  (:require [clojure.string :as string]
+            [clojure.java.io :as io]
             [clojure.data.csv :as csv]
             [clojure.string :as string]
             [clj-time.core :as time.core]
@@ -17,10 +18,6 @@
        (repeat (first csv-data))
        (rest csv-data)))
 
-(defn process-hold
-  [row]
-  {:hold (if (= (row "Референс проводки") "HOLD") true false)})
-
 (defn process-card-num
   [row]
   {:card-num (re-find #"^[\d+]{16}+" (row "Описание операции"))})
@@ -35,6 +32,19 @@
         income   (Double/parseDouble (string/replace (row "Приход") "," "."))
         outcome  (Double/parseDouble (string/replace (row "Расход") "," "."))]
     {:money (money.amounts/parse (str currency (- income outcome)))}))
+
+(defn process-type
+  [row]
+  (let [reference (row "Референс проводки")]
+    {:type (cond
+             (= reference "HOLD") :hold
+             (string/starts-with? reference "CRD_") :card
+             (string/starts-with? reference "MO") :bank_fee
+             (string/starts-with? reference "OP") :salary
+             (string/starts-with? reference "A") :salary
+             (string/starts-with? reference "B") :transfer
+             (string/starts-with? reference "C") :payment
+             :else :unknown)}))
 
 (defn -main
   [& args]

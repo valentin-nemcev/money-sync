@@ -61,10 +61,6 @@
                 ""                  ""})
          (csv-data->maps (parse-csv-file "./resources/transactions.csv")))))
 
-(deftest test-process-hold
-  (is (= (list {:hold true} {:hold false} {:hold false} {:hold false} {:hold false} {:hold false})
-         (map process-hold (csv-data->maps (parse-csv-file "./resources/transactions.csv"))))))
-
 (deftest test-process-card-num
   (is (= (list {:card-num nil}
                {:card-num nil}
@@ -91,3 +87,12 @@
                {:money (money.amounts/parse "RUR -7000.00")}
                {:money (money.amounts/parse "RUR 15686.20")})
          (map process-money (csv-data->maps (parse-csv-file "./resources/transactions.csv"))))))
+
+(deftest test-process-type
+  (is (= (list {:type :hold}
+               {:type :bank_fee}
+               {:type :card}
+               {:type :card}
+               {:type :payment}
+               {:type :salary})
+         (map process-type (csv-data->maps (parse-csv-file "./resources/transactions.csv"))))))
