@@ -18,6 +18,10 @@
        (repeat (first csv-data))
        (rest csv-data)))
 
+(defn process-account-num
+  [row]
+  {:account-num (row "Номер счета")})
+
 (defn process-card-num
   [row]
   {:card-num (re-find #"^[\d+]{16}+" (row "Описание операции"))})
@@ -50,7 +54,7 @@
   [row]
   (into {} (map
     #(% row)
-    [process-type process-card-num process-date process-money]
+    [process-account-num process-type process-card-num process-date process-money]
   )))
 
 (defn -main
