@@ -46,6 +46,13 @@
              (string/starts-with? reference "C") :payment
              :else :unknown)}))
 
+(defn process-row
+  [row]
+  (into {} (map
+    #(% row)
+    [process-type process-card-num process-date process-money]
+  )))
+
 (defn -main
   [& args]
   ; todo not complete
