@@ -53,9 +53,8 @@
 (defn process-row
   [row]
   (into {} (map
-    #(% row)
-    [process-account-num process-type process-card-num process-date process-money]
-  )))
+            #(% row)
+            [process-account-num process-type process-card-num process-date process-money])))
 
 (defn -main
   [& files]

@@ -59,7 +59,7 @@
                 "Приход"            "15686,2",
                 "Расход"            "0",
                 ""                  ""}
-                {"Тип счёта" "Текущий счёт",
+               {"Тип счёта" "Текущий счёт",
                 "Номер счета" "40817810108900008075",
                 "Валюта" "RUR",
                 "Дата операции" "11.06.17",
@@ -69,7 +69,7 @@
                 "Приход" "0",
                 "Расход" "50",
                 "" ""}
-              {"Тип счёта" "Текущий счёт",
+               {"Тип счёта" "Текущий счёт",
                 "Номер счета" "40817810108900008075",
                 "Валюта" "RUR",
                 "Дата операции" "10.06.17",
@@ -79,7 +79,7 @@
                 "Приход" "0",
                 "Расход" "30",
                 "" ""}
-              {"Тип счёта" "Текущий счёт",
+               {"Тип счёта" "Текущий счёт",
                 "Номер счета" "40817810108900008075",
                 "Валюта" "RUR",
                 "Дата операции" "10.06.17",
@@ -88,54 +88,54 @@
                 "510126++++++4656      809131\\643\\MOSKVA\\CARD2CARD CLK                 10.06.17 09.06.17       500.00  RUR MCC6012",
                 "Приход" "0",
                 "Расход" "500",
-                "" ""} )
+                "" ""})
          (csv-data->maps (parse-csv-file "./resources/transactions.csv")))))
 
 (deftest test-process-row
   (is (= (list
-           {:account-num "40817810807150018598"
-            :type        :hold,
-            :card-num    nil,
-            :date        (time.core/date-time 2017 5 22)
-            :money       (money.amounts/parse "RUR -952.00")}
-           {:account-num "40817810807150018598"
-            :type        :bank_fee,
-            :card-num    nil,
-            :date        (time.core/date-time 2017 5 21)
-            :money       (money.amounts/parse "RUR -185.25")}
-           {:account-num "40817810807150018598"
-            :type        :card,
-            :card-num    "548673++++++3137",
-            :date        (time.core/date-time 2017 5 21)
-            :money       (money.amounts/parse "RUR -1334.00")}
-           {:account-num "40817810807150018598"
-            :type        :card,
-            :card-num    "510126++++++6530",
-            :date        (time.core/date-time 2017 5 21)
-            :money       (money.amounts/parse "RUR -9500.00")}
-           {:account-num "40817810807150018598"
-            :type        :payment,
-            :card-num    nil,
-            :date        (time.core/date-time 2017 5 20)
-            :money       (money.amounts/parse "RUR -7000.00")}
-           {:account-num "40817810807150018598"
-            :type        :salary,
-            :card-num    nil,
-            :date        (time.core/date-time 2017 5 19)
-            :money       (money.amounts/parse "RUR 15686.20")}
-           {:account-num "40817810108900008075",
-            :type :card,
-            :card-num "510126++++++4656",
-            :date (time.core/date-time 2017 6 11),
-            :money (money.amounts/parse "RUR -50.00")}
-           {:account-num "40817810108900008075",
-            :type :bank_fee,
-            :card-num nil,
-            :date (time.core/date-time 2017 6 10),
-            :money (money.amounts/parse "RUR -30.00")}
-           {:account-num "40817810108900008075",
-            :type :card,
-            :card-num "510126++++++4656",
-            :date (time.core/date-time 2017 6 10),
-            :money (money.amounts/parse "RUR -500.00")})
+          {:account-num "40817810807150018598"
+           :type        :hold,
+           :card-num    nil,
+           :date        (time.core/date-time 2017 5 22)
+           :money       (money.amounts/parse "RUR -952.00")}
+          {:account-num "40817810807150018598"
+           :type        :bank_fee,
+           :card-num    nil,
+           :date        (time.core/date-time 2017 5 21)
+           :money       (money.amounts/parse "RUR -185.25")}
+          {:account-num "40817810807150018598"
+           :type        :card,
+           :card-num    "548673++++++3137",
+           :date        (time.core/date-time 2017 5 21)
+           :money       (money.amounts/parse "RUR -1334.00")}
+          {:account-num "40817810807150018598"
+           :type        :card,
+           :card-num    "510126++++++6530",
+           :date        (time.core/date-time 2017 5 21)
+           :money       (money.amounts/parse "RUR -9500.00")}
+          {:account-num "40817810807150018598"
+           :type        :payment,
+           :card-num    nil,
+           :date        (time.core/date-time 2017 5 20)
+           :money       (money.amounts/parse "RUR -7000.00")}
+          {:account-num "40817810807150018598"
+           :type        :salary,
+           :card-num    nil,
+           :date        (time.core/date-time 2017 5 19)
+           :money       (money.amounts/parse "RUR 15686.20")}
+          {:account-num "40817810108900008075",
+           :type :card,
+           :card-num "510126++++++4656",
+           :date (time.core/date-time 2017 6 11),
+           :money (money.amounts/parse "RUR -50.00")}
+          {:account-num "40817810108900008075",
+           :type :bank_fee,
+           :card-num nil,
+           :date (time.core/date-time 2017 6 10),
+           :money (money.amounts/parse "RUR -30.00")}
+          {:account-num "40817810108900008075",
+           :type :card,
+           :card-num "510126++++++4656",
+           :date (time.core/date-time 2017 6 10),
+           :money (money.amounts/parse "RUR -500.00")})
          (map process-row (csv-data->maps (parse-csv-file "./resources/transactions.csv"))))))

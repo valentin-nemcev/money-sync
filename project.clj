@@ -5,6 +5,7 @@
                  [clj-time "0.13.0"]
                  [clojurewerkz/money "1.10.0"]
                  [pjstadig/humane-test-output "0.8.2"]]
+  :plugins [[lein-cljfmt "0.5.6"]]
   :injections [(require 'pjstadig.humane-test-output)
                 (pjstadig.humane-test-output/activate!)]
   :main ^:skip-aot money-sync.core
