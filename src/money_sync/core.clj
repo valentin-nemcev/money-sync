@@ -53,10 +53,14 @@
 (defn process-row
   [row]
   (into {} (map
-    #(% row)
-    [process-account-num process-type process-card-num process-date process-money]
-  )))
+             #(% row)
+             [process-account-num process-type process-card-num process-date process-money])))
 
 (defn -main
   [& files]
-  (prn (map #(map process-row (csv-data->maps (parse-csv-file %1))) files)))
+  (clojure.pprint/pprint
+    (sort
+      #(compare (%1 :date) (%2 :date))
+      (flatten (map
+                 #(map process-row (csv-data->maps (parse-csv-file %1)))
+                 files)))))
