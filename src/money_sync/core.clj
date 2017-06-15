@@ -58,6 +58,5 @@
   )))
 
 (defn -main
-  [& args]
-  ; todo not complete
-  (csv-data->maps (parse-csv-file "./resources/transactions.csv")))
+  [& files]
+  (prn (map #(map process-row (csv-data->maps (parse-csv-file %1))) files)))
