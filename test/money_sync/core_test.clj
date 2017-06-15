@@ -62,35 +62,35 @@
          (csv-data->maps (parse-csv-file "./resources/transactions.csv")))))
 
 (deftest test-process-row
-  (is (= (list 
+  (is (= (list
            {:account-num "40817810807150018598"
-            :type :hold,
-            :card-num nil,
-            :date (time.core/date-time 2017 5 22)
-            :money (money.amounts/parse "RUR -952.00")}
+            :type        :hold,
+            :card-num    nil,
+            :date        (time.core/date-time 2017 5 22)
+            :money       (money.amounts/parse "RUR -952.00")}
            {:account-num "40817810807150018598"
-            :type :bank_fee,
-            :card-num nil,
-            :date (time.core/date-time 2017 5 21)
-            :money (money.amounts/parse "RUR -185.25")}
+            :type        :bank_fee,
+            :card-num    nil,
+            :date        (time.core/date-time 2017 5 21)
+            :money       (money.amounts/parse "RUR -185.25")}
            {:account-num "40817810807150018598"
-            :type :card,
-            :card-num "548673++++++3137",
-            :date (time.core/date-time 2017 5 21)
-            :money (money.amounts/parse "RUR -1334.00")}
+            :type        :card,
+            :card-num    "548673++++++3137",
+            :date        (time.core/date-time 2017 5 21)
+            :money       (money.amounts/parse "RUR -1334.00")}
            {:account-num "40817810807150018598"
-            :type :card,
-            :card-num "510126++++++6530",
-            :date (time.core/date-time 2017 5 21)
-            :money (money.amounts/parse "RUR -9500.00")}
+            :type        :card,
+            :card-num    "510126++++++6530",
+            :date        (time.core/date-time 2017 5 21)
+            :money       (money.amounts/parse "RUR -9500.00")}
            {:account-num "40817810807150018598"
-            :type :payment,
-            :card-num nil,
-            :date (time.core/date-time 2017 5 20)
-            :money (money.amounts/parse "RUR -7000.00")}
+            :type        :payment,
+            :card-num    nil,
+            :date        (time.core/date-time 2017 5 20)
+            :money       (money.amounts/parse "RUR -7000.00")}
            {:account-num "40817810807150018598"
-            :type :salary,
-            :card-num nil,
-            :date (time.core/date-time 2017 5 19)
-            :money (money.amounts/parse "RUR 15686.20")})
+            :type        :salary,
+            :card-num    nil,
+            :date        (time.core/date-time 2017 5 19)
+            :money       (money.amounts/parse "RUR 15686.20")})
          (map process-row (csv-data->maps (parse-csv-file "./resources/transactions.csv"))))))
