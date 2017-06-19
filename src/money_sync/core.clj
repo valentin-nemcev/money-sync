@@ -56,6 +56,13 @@
              #(% row)
              [process-account-num process-type process-card-num process-date process-money])))
 
+(defn sum-accounts
+  [rows]
+  (into {} (for
+             [[acc acc-rows] (group-by :account-num rows)]
+             [acc (reduce money.amounts/plus (map :money acc-rows))])))
+
+
 (defn -main
   [& files]
   (clojure.pprint/pprint
