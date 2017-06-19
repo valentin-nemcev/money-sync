@@ -35,7 +35,7 @@
   (let [currency (row "Валюта")
         income   (Double/parseDouble (string/replace (row "Приход") "," "."))
         outcome  (Double/parseDouble (string/replace (row "Расход") "," "."))]
-    {:money (money.amounts/parse (str currency (- income outcome)))}))
+    {:amount (money.amounts/parse (str currency (- income outcome)))}))
 
 (defn process-type
   [row]
@@ -60,14 +60,13 @@
   [rows]
   (into {} (for
              [[acc acc-rows] (group-by :account-num rows)]
-             [acc (reduce money.amounts/plus (map :money acc-rows))])))
+             [acc (reduce money.amounts/plus (map :amount acc-rows))])))
 
 
 (defn -main
   [& files]
   (clojure.pprint/pprint
-    (sort
-      #(compare (%1 :date) (%2 :date))
-      (flatten (map
-                 #(map process-row (csv-data->maps (parse-csv-file %1)))
-                 files)))))
+    (sort-by :date
+             (flatten (map
+                        #(map process-row (csv-data->maps (parse-csv-file %1)))
+                        files)))))
