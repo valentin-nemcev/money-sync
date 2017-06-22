@@ -6,7 +6,8 @@
             [clojure.string :as string]
             [clj-time.core :as time.core]
             [clj-time.format :as time.format]
-            [clojurewerkz.money.amounts :as money.amounts]))
+            [clojurewerkz.money.amounts :as money.amounts]
+            [clojurewerkz.money.format :as money.format]))
 
 (defn parse-csv-file
   [fname]
@@ -63,11 +64,17 @@
              [[acc acc-rows] (group-by :account-num rows)]
              [acc (reduce money.amounts/plus (map :amount acc-rows))])))
 
+(defn print-accounts
+  [accounts]
+  (doseq [[acc balance] accounts]
+    (println acc (money.format/format balance))))
 
 (defn -main
   [& files]
-  (clojure.pprint/pprint
-    (sort-by :date
-             (flatten (map
-                        #(map process-row (csv-data->maps (parse-csv-file %1)))
-                        files)))))
+  (->> files
+       (map #(map process-row (csv-data->maps (parse-csv-file %1))))
+       flatten
+       (sort-by :date)
+       sum-accounts
+       print-accounts))
+
