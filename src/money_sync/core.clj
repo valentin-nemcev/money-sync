@@ -48,6 +48,7 @@
              (string/starts-with? reference "A") :salary
              (string/starts-with? reference "B") :transfer
              (string/starts-with? reference "C") :payment
+             (= reference "__initial") :initial
              :else :unknown)}))
 
 (defn process-row

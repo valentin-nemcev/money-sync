@@ -137,6 +137,22 @@
             :amount      (money.amounts/parse "RUR -500.00")})
          (map process-row (csv-data->maps (parse-csv-file "./resources/transactions.csv"))))))
 
+(deftest test-process-row-initial
+  (is (= {:account-num "40817810108900008075",
+          :type        :initial,
+          :card-num    nil,
+          :date        (time.core/date-time 2017 6 10),
+          :amount      (money.amounts/parse "RUR 15000.00")}
+         (process-row 
+           {"Тип счёта"         "Текущий счёт",
+            "Номер счета"       "40817810108900008075",
+            "Валюта"            "RUR",
+            "Дата операции"     "10.06.17",
+            "Референс проводки" "__initial",
+            "Описание операции" "",
+            "Приход"            "15000",
+            "Расход"            "0"}))))
+
 (deftest test-sum-accounts
   (is (= {"40817810807150018598" (money.amounts/parse "RUR -3285.05"),
           "40817810108900008075" (money.amounts/parse "RUR -580.00")}
