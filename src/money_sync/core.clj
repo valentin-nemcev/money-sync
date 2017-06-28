@@ -62,12 +62,17 @@
   [rows]
   (into {} (for
              [[acc acc-rows] (group-by :account-num rows)]
-             [acc (reduce money.amounts/plus (map :amount acc-rows))])))
+             [acc [(reduce money.amounts/plus (map :amount acc-rows))
+                   (reduce time.core/max-date (map :date acc-rows))]])))
 
+;todo print total hold amount and date of first hold
 (defn print-accounts
   [accounts]
-  (doseq [[acc balance] accounts]
-    (println acc (money.format/format balance))))
+  (clojure.pprint/print-table
+    (for [[acc [balance date]] accounts]
+      {"Account"               acc
+       "Total amount"          (money.format/format balance)
+       "Last transaction date" (time.format/unparse (time.format/formatter "dd.MM.yy") date)})))
 
 (defn -main
   [& files]

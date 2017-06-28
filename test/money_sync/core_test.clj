@@ -143,7 +143,7 @@
           :card-num    nil,
           :date        (time.core/date-time 2017 6 10),
           :amount      (money.amounts/parse "RUR 15000.00")}
-         (process-row 
+         (process-row
            {"Тип счёта"         "Текущий счёт",
             "Номер счета"       "40817810108900008075",
             "Валюта"            "RUR",
@@ -154,6 +154,6 @@
             "Расход"            "0"}))))
 
 (deftest test-sum-accounts
-  (is (= {"40817810807150018598" (money.amounts/parse "RUR -3285.05"),
-          "40817810108900008075" (money.amounts/parse "RUR -580.00")}
+  (is (= {"40817810807150018598" [(money.amounts/parse "RUR -3285.05") (time.core/date-time 2017 5 22)],
+          "40817810108900008075" [(money.amounts/parse "RUR -580.00") (time.core/date-time 2017 6 11)]}
          (sum-accounts (map process-row (csv-data->maps (parse-csv-file "./resources/transactions.csv")))))))
