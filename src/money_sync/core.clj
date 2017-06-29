@@ -7,7 +7,9 @@
             [clj-time.core :as time.core]
             [clj-time.format :as time.format]
             [clojurewerkz.money.amounts :as money.amounts]
-            [clojurewerkz.money.format :as money.format]))
+            [clojurewerkz.money.format :as money.format]
+            [clojurewerkz.money.format :as money.format]
+            [clojure.tools.trace :as trace]))
 
 (defn parse-csv-file
   [fname]
@@ -20,26 +22,40 @@
        (rest csv-data)))
 
 (defn process-account-num
-  [row]
+  [row processed]
   {:account-num (row "Номер счета")})
 
 (defn process-card-num
-  [row]
-  {:card-num (re-find #"^[\d+]{16}+" (row "Описание операции"))})
+  [row processed]
+  {:card-num (re-find #"\d{6}\+{6}\d{4}" (row "Описание операции"))})
+
+(defn parse-date
+  [fmt str]
+  (and str (time.format/parse (time.format/formatter fmt) str)))
+
+(defn process-final-date
+  [row processed]
+  {:final-date (parse-date "dd.MM.yy" (row "Дата операции"))})
 
 (defn process-date
-  [row]
-  {:date (time.format/parse (time.format/formatter "dd.MM.yy") (row "Дата операции"))})
+  [row processed]
+  (let
+    [[match proc-date-str date-str]
+     (re-find #"(\d\d\.\d\d\.\d\d) (\d\d\.\d\d\.\d\d)" (row "Описание операции"))
+     fmt (if (= (processed :type) :hold) "yy.MM.dd" "dd.MM.yy")
+     [proc-date date]
+     (map #(or (parse-date fmt %) (processed :final-date)) [proc-date-str date-str])]
+    {:date date :proc-date proc-date}))
 
 (defn process-money
-  [row]
+  [row processed]
   (let [currency (row "Валюта")
         income   (Double/parseDouble (string/replace (row "Приход") "," "."))
         outcome  (Double/parseDouble (string/replace (row "Расход") "," "."))]
     {:amount (money.amounts/parse (str currency (- income outcome)))}))
 
 (defn process-type
-  [row]
+  [row processed]
   (let [reference (row "Референс проводки")]
     {:type (cond
              (= reference "HOLD") :hold
@@ -54,9 +70,15 @@
 
 (defn process-row
   [row]
-  (into {} (map
-             #(% row)
-             [process-account-num process-type process-card-num process-date process-money])))
+  (reduce
+    (fn [res f] (merge res (f row res)))
+    {}
+    [process-type
+     process-account-num
+     process-card-num
+     process-final-date
+     process-date
+     process-money]))
 
 (defn sum-accounts
   [rows]
@@ -79,7 +101,7 @@
   (->> files
        (map #(map process-row (csv-data->maps (parse-csv-file %1))))
        flatten
-       (sort-by :date)
+       (sort-by :final-date)
        sum-accounts
        print-accounts))
 

@@ -92,48 +92,66 @@
   (is (= (list
            {:account-num "40817810807150018598"
             :type        :hold,
-            :card-num    nil,
+            :card-num    "548673++++++3137",
             :date        (time.core/date-time 2017 5 22)
+            :proc-date   (time.core/date-time 2017 5 22)
+            :final-date  (time.core/date-time 2017 5 22)
             :amount      (money.amounts/parse "RUR -952.00")}
            {:account-num "40817810807150018598"
             :type        :bank_fee,
             :card-num    nil,
             :date        (time.core/date-time 2017 5 21)
+            :proc-date   (time.core/date-time 2017 5 21)
+            :final-date  (time.core/date-time 2017 5 21)
             :amount      (money.amounts/parse "RUR -185.25")}
            {:account-num "40817810807150018598"
             :type        :card,
             :card-num    "548673++++++3137",
-            :date        (time.core/date-time 2017 5 21)
+            :date        (time.core/date-time 2017 5 18)
+            :proc-date   (time.core/date-time 2017 5 21)
+            :final-date  (time.core/date-time 2017 5 21)
             :amount      (money.amounts/parse "RUR -1334.00")}
            {:account-num "40817810807150018598"
             :type        :card,
             :card-num    "510126++++++6530",
-            :date        (time.core/date-time 2017 5 21)
+            :date        (time.core/date-time 2017 5 20)
+            :proc-date   (time.core/date-time 2017 5 21)
+            :final-date  (time.core/date-time 2017 5 21)
             :amount      (money.amounts/parse "RUR -9500.00")}
            {:account-num "40817810807150018598"
             :type        :payment,
             :card-num    nil,
             :date        (time.core/date-time 2017 5 20)
+            :proc-date   (time.core/date-time 2017 5 20)
+            :final-date  (time.core/date-time 2017 5 20)
             :amount      (money.amounts/parse "RUR -7000.00")}
            {:account-num "40817810807150018598"
             :type        :salary,
             :card-num    nil,
             :date        (time.core/date-time 2017 5 19)
+            :proc-date   (time.core/date-time 2017 5 19)
+            :final-date  (time.core/date-time 2017 5 19)
             :amount      (money.amounts/parse "RUR 15686.20")}
            {:account-num "40817810108900008075",
             :type        :card,
             :card-num    "510126++++++4656",
-            :date        (time.core/date-time 2017 6 11),
+            :date        (time.core/date-time 2017 6  8),
+            :proc-date   (time.core/date-time 2017 6 10),
+            :final-date  (time.core/date-time 2017 6 11),
             :amount      (money.amounts/parse "RUR -50.00")}
            {:account-num "40817810108900008075",
             :type        :bank_fee,
             :card-num    nil,
             :date        (time.core/date-time 2017 6 10),
+            :proc-date   (time.core/date-time 2017 6 10),
+            :final-date  (time.core/date-time 2017 6 10),
             :amount      (money.amounts/parse "RUR -30.00")}
            {:account-num "40817810108900008075",
             :type        :card,
             :card-num    "510126++++++4656",
-            :date        (time.core/date-time 2017 6 10),
+            :date        (time.core/date-time 2017 6  9),
+            :proc-date   (time.core/date-time 2017 6 10),
+            :final-date  (time.core/date-time 2017 6 10),
             :amount      (money.amounts/parse "RUR -500.00")})
          (map process-row (csv-data->maps (parse-csv-file "./resources/transactions.csv"))))))
 
@@ -142,6 +160,8 @@
           :type        :initial,
           :card-num    nil,
           :date        (time.core/date-time 2017 6 10),
+          :proc-date   (time.core/date-time 2017 6 10),
+          :final-date  (time.core/date-time 2017 6 10),
           :amount      (money.amounts/parse "RUR 15000.00")}
          (process-row
            {"Тип счёта"         "Текущий счёт",
