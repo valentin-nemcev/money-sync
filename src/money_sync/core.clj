@@ -8,7 +8,6 @@
             [clj-time.format :as time.format]
             [clojurewerkz.money.amounts :as money.amounts]
             [clojurewerkz.money.format :as money.format]
-            [clojurewerkz.money.format :as money.format]
             [clojure.tools.trace :as trace]))
 
 (defn parse-csv-file
@@ -80,21 +79,25 @@
      process-date
      process-money]))
 
-(defn sum-accounts
+(defn accounts-stat
   [rows]
   (into {} (for
-             [[acc acc-rows] (group-by :account-num rows)]
+             [[acc acc-rows] (group-by :account-num rows)
+              :let [holds (filter (fn [row] (= (:type row) :hold)) acc-rows)]]
              [acc [(reduce money.amounts/plus (map :amount acc-rows))
-                   (reduce time.core/max-date (map :date acc-rows))]])))
+                   (reduce time.core/max-date (map :final-date acc-rows))
+                   (if (empty? holds) nil (money.amounts/abs (reduce money.amounts/plus (map :amount holds))))
+                   (if (empty? holds) nil (reduce time.core/min-date (map :final-date holds)))]])))
 
-;todo print total hold amount and date of first hold
 (defn print-accounts
   [accounts]
   (clojure.pprint/print-table
-    (for [[acc [balance date]] accounts]
+    (for [[acc [balance last-updated-date hold-amount first-hold-date]] accounts]
       {"Account"               acc
        "Total amount"          (money.format/format balance)
-       "Last transaction date" (time.format/unparse (time.format/formatter "dd.MM.yy") date)})))
+       "Last transaction date" (time.format/unparse (time.format/formatter "dd.MM.yy") last-updated-date)
+       "Hold total amount"     (if (nil? hold-amount) "no holds"(money.format/format hold-amount))
+       "First hold date"       (if (nil? first-hold-date) "no holds" (time.format/unparse (time.format/formatter "dd.MM.yy") first-hold-date))})))
 
 (defn -main
   [& files]
@@ -102,6 +105,6 @@
        (map #(map process-row (csv-data->maps (parse-csv-file %1))))
        flatten
        (sort-by :final-date)
-       sum-accounts
+       accounts-stat
        print-accounts))
 
