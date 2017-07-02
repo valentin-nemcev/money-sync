@@ -41,9 +41,13 @@
   (let
     [[match proc-date-str date-str]
      (re-find #"(\d\d\.\d\d\.\d\d) (\d\d\.\d\d\.\d\d)" (row "Описание операции"))
-     fmt (if (= (processed :type) :hold) "yy.MM.dd" "dd.MM.yy")
+
+     fmt
+     (if (= (processed :type) :hold) "yy.MM.dd" "dd.MM.yy")
+
      [proc-date date]
      (map #(or (parse-date fmt %) (processed :final-date)) [proc-date-str date-str])]
+
     {:date date :proc-date proc-date}))
 
 (defn process-money
@@ -96,7 +100,7 @@
       {"Account"               acc
        "Total amount"          (money.format/format balance)
        "Last transaction date" (time.format/unparse (time.format/formatter "dd.MM.yy") last-updated-date)
-       "Hold total amount"     (if (nil? hold-amount) "no holds"(money.format/format hold-amount))
+       "Hold total amount"     (if (nil? hold-amount) "no holds" (money.format/format hold-amount))
        "First hold date"       (if (nil? first-hold-date) "no holds" (time.format/unparse (time.format/formatter "dd.MM.yy") first-hold-date))})))
 
 (defn -main
