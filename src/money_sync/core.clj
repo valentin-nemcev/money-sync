@@ -57,6 +57,12 @@
         outcome  (Double/parseDouble (string/replace (row "Расход") "," "."))]
     {:final-amount (money.amounts/parse (str currency (- income outcome)))}))
 
+(defn process-amount
+  [row processed]
+  (let
+    [[match amount currency] (re-find #"(\d+.\d{2})  ?([A-Z]{3})" (row "Описание операции"))]
+    {:amount (and amount (money.amounts/parse (str currency amount)))}))
+
 (defn process-type
   [row processed]
   (let [reference (row "Референс проводки")]
@@ -81,7 +87,8 @@
      process-card-num
      process-final-date
      process-date
-     process-final-amount]))
+     process-final-amount
+     process-amount]))
 
 (defn accounts-stat
   [rows]
@@ -116,4 +123,4 @@
        (sort-by :final-date)
        accounts-stat
        print-accounts))
-; todo parse amount from description
+
