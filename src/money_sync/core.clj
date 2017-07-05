@@ -60,8 +60,18 @@
 (defn process-amount
   [row processed]
   (let
-    [[match amount currency] (re-find #"(\d+.\d{2})  ?([A-Z]{3})" (row "Описание операции"))]
-    {:amount (and amount (money.amounts/parse (str currency amount)))}))
+    [[match amount-str currency-str]
+     (re-find #"(\d+.\d{2})  ?([A-Z]{3})" (row "Описание операции"))
+
+     negative
+     (money.amounts/negative? (processed :final-amount))
+
+     amount
+     (if (nil? amount-str)
+       (processed :final-amount)
+       (money.amounts/parse (str currency-str (if negative "-" "") amount-str)))]
+
+    {:amount amount}))
 
 (defn process-type
   [row processed]
