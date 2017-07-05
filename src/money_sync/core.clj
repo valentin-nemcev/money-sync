@@ -50,12 +50,12 @@
 
     {:date date :proc-date proc-date}))
 
-(defn process-money
+(defn process-final-amount
   [row processed]
   (let [currency (row "Валюта")
         income   (Double/parseDouble (string/replace (row "Приход") "," "."))
         outcome  (Double/parseDouble (string/replace (row "Расход") "," "."))]
-    {:amount (money.amounts/parse (str currency (- income outcome)))}))
+    {:final-amount (money.amounts/parse (str currency (- income outcome)))}))
 
 (defn process-type
   [row processed]
@@ -81,17 +81,22 @@
      process-card-num
      process-final-date
      process-date
-     process-money]))
+     process-final-amount]))
 
 (defn accounts-stat
   [rows]
   (into {} (for
              [[acc acc-rows] (group-by :account-num rows)
               :let [holds (filter (fn [row] (= (:type row) :hold)) acc-rows)]]
-             [acc [(reduce money.amounts/plus (map :amount acc-rows))
-                   (reduce time.core/max-date (map :final-date acc-rows))
-                   (if (empty? holds) nil (money.amounts/abs (reduce money.amounts/plus (map :amount holds))))
-                   (if (empty? holds) nil (reduce time.core/min-date (map :final-date holds)))]])))
+             [acc
+              [(reduce money.amounts/plus (map :final-amount acc-rows))
+               (reduce time.core/max-date (map :final-date acc-rows))
+               (if (empty? holds)
+                 nil
+                 (money.amounts/abs (reduce money.amounts/plus (map :final-amount holds))))
+               (if (empty? holds)
+                 nil
+                 (reduce time.core/min-date (map :final-date holds)))]])))
 
 (defn print-accounts
   [accounts]
@@ -111,4 +116,4 @@
        (sort-by :final-date)
        accounts-stat
        print-accounts))
-
+; todo parse amount from description
