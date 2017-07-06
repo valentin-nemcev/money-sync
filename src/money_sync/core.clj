@@ -102,28 +102,32 @@
 
 (defn accounts-stat
   [rows]
-  (into {} (for
+  (into [] (for
              [[acc acc-rows] (group-by :account-num rows)
               :let [holds (filter (fn [row] (= (:type row) :hold)) acc-rows)]]
-             [acc
-              [(reduce money.amounts/plus (map :final-amount acc-rows))
-               (reduce time.core/max-date (map :final-date acc-rows))
-               (if (empty? holds)
-                 nil
-                 (money.amounts/abs (reduce money.amounts/plus (map :final-amount holds))))
-               (if (empty? holds)
-                 nil
-                 (reduce time.core/min-date (map :final-date holds)))]])))
+             {:account           acc
+              :balance           (reduce money.amounts/plus (map :final-amount acc-rows))
+              :last-updated-date (reduce time.core/max-date (map :final-date acc-rows))
+              :hold-total-amount (if (empty? holds)
+                                   nil
+                                   (money.amounts/abs (reduce money.amounts/plus (map :final-amount holds))))
+              :first-hold-date   (if (empty? holds)
+                                   nil
+                                   (reduce time.core/min-date (map :final-date holds)))})))
 
 (defn print-accounts
   [accounts]
   (clojure.pprint/print-table
-    (for [[acc [balance last-updated-date hold-amount first-hold-date]] accounts]
-      {"Account"               acc
+    (for [{:keys [account balance last-updated-date hold-total-amount first-hold-date]} accounts]
+      {"Account"               account
        "Total amount"          (money.format/format balance)
        "Last transaction date" (time.format/unparse (time.format/formatter "dd.MM.yy") last-updated-date)
-       "Hold total amount"     (if (nil? hold-amount) "no holds" (money.format/format hold-amount))
-       "First hold date"       (if (nil? first-hold-date) "no holds" (time.format/unparse (time.format/formatter "dd.MM.yy") first-hold-date))})))
+       "Hold total amount"     (if (nil? hold-total-amount)
+                                 "no holds"
+                                 (money.format/format hold-total-amount))
+       "First hold date"       (if (nil? first-hold-date)
+                                 "no holds"
+                                 (time.format/unparse (time.format/formatter "dd.MM.yy") first-hold-date))})))
 
 (defn -main
   [& files]

@@ -184,12 +184,14 @@
             "Расход"            "0"}))))
 
 (deftest test-accounts-stat
-  (is (= {"40817810807150018598" [(money.amounts/parse "RUR -3285.05")
-                                  (time.core/date-time 2017 5 22)
-                                  (money.amounts/parse "RUR 952.00")
-                                  (time.core/date-time 2017 5 22)],
-          "40817810108900008075" [(money.amounts/parse "RUR -580.00")
-                                  (time.core/date-time 2017 6 11)
-                                  nil
-                                  nil]}
+  (is (= [{:account           "40817810807150018598"
+           :balance           (money.amounts/parse "RUR -3285.05")
+           :last-updated-date (time.core/date-time 2017 5 22)
+           :hold-total-amount (money.amounts/parse "RUR 952.00")
+           :first-hold-date   (time.core/date-time 2017 5 22)},
+          {:account           "40817810108900008075"
+           :balance           (money.amounts/parse "RUR -580.00")
+           :last-updated-date (time.core/date-time 2017 6 11)
+           :hold-total-amount nil
+           :first-hold-date   nil}]
          (accounts-stat (map process-row (csv-data->maps (parse-csv-file "./resources/transactions.csv")))))))
