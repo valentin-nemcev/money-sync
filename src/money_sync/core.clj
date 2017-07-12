@@ -89,6 +89,11 @@
              (= reference "__initial") :initial
              :else :unknown)}))
 
+(defn process-description
+  [row processed]
+  {:description (row "Описание операции")})
+
+
 (defn process-row
   [row]
   (reduce
@@ -100,7 +105,9 @@
      process-final-date
      process-date
      process-final-amount
-     process-amount]))
+     process-amount
+     ; process-description
+     ]))
 
 (defn accounts-stat
   [rows]
