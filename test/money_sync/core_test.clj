@@ -162,7 +162,8 @@
             :final-date   (time.core/date-time 2017 6 10),
             :final-amount (money.amounts/parse "RUR -500.00")
             :amount       (money.amounts/parse "RUR -500.00")})
-         (map process-row (csv-data->maps (parse-csv-file "./resources/transactions.csv"))))))
+         (map process-row
+              (csv-data->maps (parse-csv-file "./resources/transactions.csv"))))))
 
 (deftest test-process-row-initial
   (is (= {:account-num  "40817810108900008075",
@@ -194,4 +195,6 @@
            :last-updated-date (time.core/date-time 2017 6 11)
            :hold-total-amount nil
            :first-hold-date   nil}]
-         (accounts-stat (map process-row (csv-data->maps (parse-csv-file "./resources/transactions.csv")))))))
+         (accounts-stat
+           (map process-row
+                (csv-data->maps (parse-csv-file "./resources/transactions.csv")))))))
