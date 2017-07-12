@@ -87,11 +87,11 @@
                 "Расход"            "500",
                 ""                  ""})
          (csv-data->maps (parse-csv-file "./resources/transactions.csv")))))
-
 (deftest test-process-row
   (is (= (list
            {:account-num  "40817810807150018598"
             :type         :hold,
+            :ref          "HOLD"
             :card-num     "548673++++++3137",
             :date         (time.core/date-time 2017 5 22)
             :proc-date    (time.core/date-time 2017 5 22)
@@ -100,6 +100,7 @@
             :amount       (money.amounts/parse "RUR -952.00")}
            {:account-num  "40817810807150018598"
             :type         :bank_fee,
+            :ref          "MOWV 21705000584"
             :card-num     nil,
             :date         (time.core/date-time 2017 5 21)
             :proc-date    (time.core/date-time 2017 5 21)
@@ -108,6 +109,7 @@
             :amount       (money.amounts/parse "RUR -185.25")}
            {:account-num  "40817810807150018598"
             :type         :card,
+            :ref          "CRD_4XR24Z"
             :card-num     "548673++++++3137",
             :date         (time.core/date-time 2017 5 18)
             :proc-date    (time.core/date-time 2017 5 21)
@@ -116,6 +118,7 @@
             :amount       (money.amounts/parse "RUR -1334.00")}
            {:account-num  "40817810807150018598"
             :type         :card,
+            :ref          "CRD_7U9213"
             :card-num     "510126++++++6530",
             :date         (time.core/date-time 2017 5 20)
             :proc-date    (time.core/date-time 2017 5 21)
@@ -124,6 +127,7 @@
             :amount       (money.amounts/parse "RUR -9500.00")}
            {:account-num  "40817810807150018598"
             :type         :payment,
+            :ref          "C012005170005237"
             :card-num     nil,
             :date         (time.core/date-time 2017 5 20)
             :proc-date    (time.core/date-time 2017 5 20)
@@ -132,6 +136,7 @@
             :amount       (money.amounts/parse "RUR -7000.00")}
            {:account-num  "40817810807150018598"
             :type         :salary,
+            :ref          "OP1ED02112339436"
             :card-num     nil,
             :date         (time.core/date-time 2017 5 19)
             :proc-date    (time.core/date-time 2017 5 19)
@@ -140,6 +145,7 @@
             :amount       (money.amounts/parse "RUR 15686.20")}
            {:account-num  "40817810108900008075",
             :type         :card,
+            :ref          "CRD_5W12YR"
             :card-num     "510126++++++4656",
             :date         (time.core/date-time 2017 6 8),
             :proc-date    (time.core/date-time 2017 6 10),
@@ -148,6 +154,7 @@
             :amount       (money.amounts/parse "RUR -50.00")}
            {:account-num  "40817810108900008075",
             :type         :bank_fee,
+            :ref          "MOCV 10706000272"
             :card-num     nil,
             :date         (time.core/date-time 2017 6 10),
             :proc-date    (time.core/date-time 2017 6 10),
@@ -156,6 +163,7 @@
             :amount       (money.amounts/parse "RUR -30.00")}
            {:account-num  "40817810108900008075",
             :type         :card,
+            :ref          "CRD_72C25V"
             :card-num     "510126++++++4656",
             :date         (time.core/date-time 2017 6 9),
             :proc-date    (time.core/date-time 2017 6 10),
@@ -168,6 +176,7 @@
 (deftest test-process-row-initial
   (is (= {:account-num  "40817810108900008075",
           :type         :initial,
+          :ref          "__initial"
           :card-num     nil,
           :date         (time.core/date-time 2017 6 10),
           :proc-date    (time.core/date-time 2017 6 10),

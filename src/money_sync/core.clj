@@ -77,7 +77,8 @@
 (defn process-type
   [row processed]
   (let [reference (row "Референс проводки")]
-    {:type (cond
+    {:ref reference
+     :type (cond
              (= reference "HOLD") :hold
              (string/starts-with? reference "CRD_") :card
              (string/starts-with? reference "MO") :bank_fee
