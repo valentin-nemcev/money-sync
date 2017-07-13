@@ -158,6 +158,31 @@
          "no holds"
          (time.format/unparse (time.format/formatter "dd.MM.yy") first-hold-date))})))
 
+(defn print-rows
+  [rows]
+  (clojure.pprint/print-table
+    (map
+      (fn [{:keys [account-num type ref card-num date final-amount description]}]
+        {"Account" account-num
+         "Type"    type
+         "Card"    card-num
+         "Date"    (time.format/unparse (time.format/formatter "dd.MM.yy") date)
+         "Ref"     ref
+         "Amount"  (and final-amount (money.format/format final-amount))
+         "Descr"   description})
+      rows)))
+
+
+(defn merge-row-lists
+  [prev next]
+  (map vector prev next))
+
+(defn merge-rows
+  [res input]
+  (let [inputMap (group-by #(mapv % [:account-num :date]) input)]
+    (merge-with merge-row-lists res inputMap)))
+
+
 (defn -main
   [& files]
   (->> files
