@@ -5,7 +5,8 @@
                  [clj-time "0.13.0"]
                  [clojurewerkz/money "1.10.0"]
                  [pjstadig/humane-test-output "0.8.2"]
-                 [org.clojure/tools.trace "0.7.9"]]
+                 [org.clojure/tools.trace "0.7.9"]
+                 [org.clojure/core.match "0.3.0-alpha4"]]
   :plugins [[lein-cljfmt "0.5.6"]]
   :injections [(require 'pjstadig.humane-test-output)
                 (pjstadig.humane-test-output/activate!)]

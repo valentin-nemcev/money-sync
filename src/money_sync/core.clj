@@ -8,7 +8,8 @@
             [clj-time.format :as time.format]
             [clojurewerkz.money.amounts :as money.amounts]
             [clojurewerkz.money.format :as money.format]
-            [clojure.tools.trace :as trace]))
+            [clojure.tools.trace :as trace]
+            [clojure.core.match :refer [match]]))
 
 (defn parse-csv-file
   [fname]
@@ -172,10 +173,15 @@
          "Descr"   description})
       rows)))
 
+(def row-merge-key #(mapv % [:card-num :amount :ref]))
 
 (defn merge-row-lists
   [prev next]
-  (map vector prev next))
+  (loop [left prev
+         right (sort-by row-merge-key)
+         res []]
+    
+    ))
 
 (defn merge-rows
   [res input]
@@ -187,8 +193,12 @@
   [& files]
   (->> files
        (map #(map process-row (csv-data->maps (parse-csv-file %1))))
+       (reduce merge-rows (sorted-map))
+       vals
+       (map #(sort-by :ref %))
        flatten
-       (sort-by :final-date)
-       accounts-stat
-       print-accounts))
+       print-rows))
+       ; (sort-by :final-date)
+       ; accounts-stat
+       ; print-accounts))
 
