@@ -363,3 +363,81 @@
              :proc-date    (time.core/date-time 2017 6 26),
              :final-amount (money.amounts/parse "RUR 700.00"),
              :amount       (money.amounts/parse "RUR 700.00")}]))))
+
+(deftest test-merge-row-lists-with-identical-holds
+  (is (= [[{:ref          "HOLD",
+            :type         :hold,
+            :account-num  "40817810108900008075",
+            :card-num     "548673++++++9034",
+            :final-date   (time.core/date-time 2017 6 26),
+            :date         (time.core/date-time 2017 6 26),
+            :proc-date    (time.core/date-time 2017 6 26),
+            :final-amount (money.amounts/parse "RUR -418.00"),
+            :amount       (money.amounts/parse "RUR -418.00")}
+           {:ref          "HOLD",
+            :type         :hold,
+            :account-num  "40817810108900008075",
+            :card-num     "548673++++++9034",
+            :final-date   (time.core/date-time 2017 6 26),
+            :date         (time.core/date-time 2017 6 26),
+            :proc-date    (time.core/date-time 2017 6 26),
+            :final-amount (money.amounts/parse "RUR -418.00"),
+            :amount       (money.amounts/parse "RUR -418.00")}]
+
+          [{:ref          "HOLD",
+            :type         :hold,
+            :account-num  "40817810108900008075",
+            :card-num     "548673++++++9034",
+            :final-date   (time.core/date-time 2017 6 26),
+            :date         (time.core/date-time 2017 6 26),
+            :proc-date    (time.core/date-time 2017 6 26),
+            :final-amount (money.amounts/parse "RUR -418.00"),
+            :amount       (money.amounts/parse "RUR -418.00")}
+           {:ref          "CRD_9T44ZB",
+            :type         :card,
+            :account-num  "40817810108900008075",
+            :card-num     "548673++++++9034",
+            :final-date   (time.core/date-time 2017 6 29),
+            :date         (time.core/date-time 2017 6 26),
+            :proc-date    (time.core/date-time 2017 6 29),
+            :final-amount (money.amounts/parse "RUR -418.00"),
+            :amount       (money.amounts/parse "RUR -418.00")}]]
+
+         (merge-row-lists
+           [{:ref          "HOLD",
+             :type         :hold,
+             :account-num  "40817810108900008075",
+             :card-num     "548673++++++9034",
+             :final-date   (time.core/date-time 2017 6 26),
+             :date         (time.core/date-time 2017 6 26),
+             :proc-date    (time.core/date-time 2017 6 26),
+             :final-amount (money.amounts/parse "RUR -418.00"),
+             :amount       (money.amounts/parse "RUR -418.00")}
+            {:ref          "HOLD",
+             :type         :hold,
+             :account-num  "40817810108900008075",
+             :card-num     "548673++++++9034",
+             :final-date   (time.core/date-time 2017 6 26),
+             :date         (time.core/date-time 2017 6 26),
+             :proc-date    (time.core/date-time 2017 6 26),
+             :final-amount (money.amounts/parse "RUR -418.00"),
+             :amount       (money.amounts/parse "RUR -418.00")}]
+
+           [{:ref          "HOLD",
+             :type         :hold,
+             :account-num  "40817810108900008075",
+             :card-num     "548673++++++9034",
+             :final-date   (time.core/date-time 2017 6 26),
+             :date         (time.core/date-time 2017 6 26),
+             :proc-date    (time.core/date-time 2017 6 26),
+             :final-amount (money.amounts/parse "RUR -418.00"),
+             :amount       (money.amounts/parse "RUR -418.00")}
+            {:ref          "CRD_9T44ZB",
+             :type         :card,
+             :account-num  "40817810108900008075",
+             :card-num     "548673++++++9034",
+             :final-date   (time.core/date-time 2017 6 29),
+             :date         (time.core/date-time 2017 6 26),
+             :proc-date    (time.core/date-time 2017 6 29),
+             :final-amount (money.amounts/parse "RUR -418.00"),
+             :amount       (money.amounts/parse "RUR -418.00")}]))))
