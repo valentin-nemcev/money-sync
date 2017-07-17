@@ -210,7 +210,18 @@
                 (csv-data->maps (parse-csv-file "./resources/transactions.csv")))))))
 
 (deftest test-merge-row-lists
-  (is (= [[{:ref          "HOLD",
+  (is (= [[nil
+           {:ref          "HOLD",
+            :type         :hold,
+            :account-num  "40817810807150018598",
+            :card-num     "510126++++++6530",
+            :final-date   (time.core/date-time 2017 7 1),
+            :date         (time.core/date-time 2017 7 1),
+            :proc-date    (time.core/date-time 2017 7 1),
+            :final-amount (money.amounts/parse "RUR -159.20"),
+            :amount       (money.amounts/parse "RUR -159.20")}]
+
+          [{:ref          "HOLD",
             :type         :hold,
             :account-num  "40817810108900008075",
             :card-num     "510126++++++4656",
@@ -265,7 +276,18 @@
             :date         (time.core/date-time 2017 6 26),
             :proc-date    (time.core/date-time 2017 6 26),
             :final-amount (money.amounts/parse "RUR 700.00"),
-            :amount       (money.amounts/parse "RUR 700.00")}]]
+            :amount       (money.amounts/parse "RUR 700.00")}]
+
+          [{:ref          "CRD_10V46N",
+            :type         :card,
+            :account-num  "40817810108900008075",
+            :card-num     "510126++++++4656",
+            :final-date   (time.core/date-time 2017 6 22),
+            :date         (time.core/date-time 2017 6 19),
+            :proc-date    (time.core/date-time 2017 6 20),
+            :final-amount (money.amounts/parse "RUR -15.65"),
+            :amount       (money.amounts/parse "RUR -15.65")}
+           nil]]
 
          (merge-row-lists
            [{:ref          "HOLD",
@@ -294,9 +316,27 @@
              :date         (time.core/date-time 2017 6 26),
              :proc-date    (time.core/date-time 2017 6 26),
              :final-amount (money.amounts/parse "RUR 700.00"),
-             :amount       (money.amounts/parse "RUR 700.00")}]
+             :amount       (money.amounts/parse "RUR 700.00")}
+            {:ref          "CRD_10V46N",
+             :type         :card,
+             :account-num  "40817810108900008075",
+             :card-num     "510126++++++4656",
+             :final-date   (time.core/date-time 2017 6 22),
+             :date         (time.core/date-time 2017 6 19),
+             :proc-date    (time.core/date-time 2017 6 20),
+             :final-amount (money.amounts/parse "RUR -15.65"),
+             :amount       (money.amounts/parse "RUR -15.65")}]
 
            [{:ref          "HOLD",
+             :type         :hold,
+             :account-num  "40817810807150018598",
+             :card-num     "510126++++++6530",
+             :final-date   (time.core/date-time 2017 7 1),
+             :date         (time.core/date-time 2017 7 1),
+             :proc-date    (time.core/date-time 2017 7 1),
+             :final-amount (money.amounts/parse "RUR -159.20"),
+             :amount       (money.amounts/parse "RUR -159.20")}
+            {:ref          "HOLD",
              :type         :hold,
              :account-num  "40817810108900008075",
              :card-num     "510126++++++4656",
