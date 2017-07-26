@@ -78,7 +78,7 @@
 (defn process-type
   [row processed]
   (let [reference (row "Референс проводки")]
-    {:ref reference
+    {:ref  reference
      :type (cond
              (= reference "HOLD") :hold
              (string/starts-with? reference "CRD_") :card
@@ -186,7 +186,7 @@
     (= (row-hold-key left) (row-hold-key right))
     (= (:ref left) (:ref right))))
 
-(defn row-lt?
+(defn row-less-than?
   [left right]
   (neg? (compare (row-merge-key left) (row-merge-key right))))
 
@@ -196,10 +196,10 @@
          right (vec (sort-by row-merge-key next))
          res []]
     (match
-      [left     right]
+      [left     right   ]
       [[l & lr] [r & rr]] (cond
                             (rows-identical? l r) (recur lr   rr    (conj res [l   r  ]))
-                            (row-lt? l r)         (recur lr   right (conj res [l   nil]))
+                            (row-less-than? l r)  (recur lr   right (conj res [l   nil]))
                             :else                 (recur left rr    (conj res [nil r  ])))
       [[]       [r & rr]] (recur [] rr (conj res [nil r]))
       [[l & lr] []      ] (recur lr [] (conj res [l nil]))
