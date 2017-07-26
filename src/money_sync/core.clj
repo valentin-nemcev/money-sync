@@ -175,13 +175,35 @@
 
 (def row-merge-key #(mapv % [:card-num :amount :ref]))
 
+(def row-hold-key #(mapv % [:card-num :amount]))
+
+(def is-hold? #(= (% :type) :hold))
+
+
+(defn rows-identical?
+  [left right]
+  (if (or (is-hold? left) (is-hold? right))
+    (= (row-hold-key left) (row-hold-key right))
+    (= (:ref left) (:ref right))))
+
+(defn row-lt?
+  [left right]
+  (neg? (compare (row-merge-key left) (row-merge-key right))))
+
 (defn merge-row-lists
   [prev next]
   (loop [left prev
-         right (sort-by row-merge-key)
+         right (vec (sort-by row-merge-key next))
          res []]
-    
-    ))
+    (match
+      [left     right]
+      [[l & lr] [r & rr]] (cond
+                            (rows-identical? l r) (recur lr   rr    (conj res [l   r  ]))
+                            (row-lt? l r)         (recur lr   right (conj res [l   nil]))
+                            :else                 (recur left rr    (conj res [nil r  ])))
+      [[]       [r & rr]] (recur [] rr (conj res [nil r]))
+      [[l & lr] []      ] (recur lr [] (conj res [l nil]))
+      [[]       []      ] res)))
 
 (defn merge-rows
   [res input]
