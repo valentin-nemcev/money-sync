@@ -180,15 +180,22 @@
 (def is-hold? #(= (% :type) :hold))
 
 
-(defn rows-identical?
+(defn rows-id?
+  "Rows identical"
   [left right]
   (if (or (is-hold? left) (is-hold? right))
     (= (row-hold-key left) (row-hold-key right))
     (= (:ref left) (:ref right))))
 
-(defn row-less-than?
+(defn row-lt?
+  "Row less than"
   [left right]
   (neg? (compare (row-merge-key left) (row-merge-key right))))
+
+(defn add-to-hist
+  "Add to history"
+  [row & history-rows]
+  (update row :history #(into (or % []) history-rows)))
 
 (defn merge-row-lists
   [prev next]
@@ -198,11 +205,11 @@
     (match
       [left     right   ]
       [[l & lr] [r & rr]] (cond
-                            (rows-identical? l r) (recur lr   rr    (conj res [l   r  ]))
-                            (row-less-than? l r)  (recur lr   right (conj res [l   nil]))
-                            :else                 (recur left rr    (conj res [nil r  ])))
-      [[]       [r & rr]] (recur [] rr (conj res [nil r]))
-      [[l & lr] []      ] (recur lr [] (conj res [l nil]))
+                            (rows-id? l r) (recur lr   rr    (conj res (add-to-hist r l)))
+                            (row-lt?  l r) (recur lr   right (conj res (add-to-hist l)))
+                            :else          (recur left rr    (conj res (add-to-hist r))))
+      [[]       [r & rr]] (recur [] rr (conj res (add-to-hist r)))
+      [[l & lr] []      ] (recur lr [] (conj res (add-to-hist l)))
       [[]       []      ] res)))
 
 (defn merge-rows
