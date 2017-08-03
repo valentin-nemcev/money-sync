@@ -11,6 +11,15 @@
             [clojure.tools.trace :as trace]
             [clojure.core.match :refer [match]]))
 
+(. clojure.pprint/simple-dispatch addMethod
+   org.joda.time.DateTime #(print (time.format/unparse
+                                    (time.format/formatters :date)
+                                    %)))
+
+(. clojure.pprint/simple-dispatch addMethod
+   org.joda.money.Money #(print (money.format/format %)))
+
+
 (defn parse-csv-file
   [fname]
   (csv/read-csv (slurp fname :encoding "cp1251") :separator \;))
