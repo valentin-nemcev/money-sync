@@ -11,6 +11,15 @@
             [clojure.tools.trace :as trace]
             [clojure.core.match :refer [match]]))
 
+(. clojure.pprint/simple-dispatch addMethod
+   org.joda.time.DateTime #(print (time.format/unparse
+                                    (time.format/formatters :date)
+                                    %)))
+
+(. clojure.pprint/simple-dispatch addMethod
+   org.joda.money.Money #(print (money.format/format %)))
+
+
 (defn parse-csv-file
   [fname]
   (csv/read-csv (slurp fname :encoding "cp1251") :separator \;))
@@ -173,13 +182,12 @@
          "Descr"   description})
       rows)))
 
-(defn row-merge-key
-  [row]
-  (let [[card-num amount ref] (mapv row [:card-num :amount :ref])]
-    [card-num
-     (money.amounts/currency-of amount)
-     (money.amounts/minor-of amount)
-     ref]))
+(def row-merge-key #(mapv % [:card-num :amount :ref]))
+(def row-merge-key (juxt
+                     :card-num
+                     (comp money.amounts/currency-of :amount)
+                     (comp money.amounts/minor-of :amount)
+                     :ref))
 
 (def row-hold-key #(mapv % [:card-num :amount]))
 
