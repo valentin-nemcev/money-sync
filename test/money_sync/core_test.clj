@@ -219,15 +219,15 @@
            :proc-date    (time.core/date-time 2017 6 29),
            :final-amount (money.amounts/parse "RUR -14.75"),
            :amount       (money.amounts/parse "RUR -14.75")
-           :history [{:ref          "HOLD",
-                      :type         :hold,
-                      :account-num  "40817810108900008075",
-                      :card-num     "510126++++++4656",
-                      :final-date   (time.core/date-time 2017 6 29),
-                      :date         (time.core/date-time 2017 6 29),
-                      :proc-date    (time.core/date-time 2017 6 29),
-                      :final-amount (money.amounts/parse "RUR -14.75"),
-                      :amount       (money.amounts/parse "RUR -14.75")}]}
+           :history      [{:ref          "HOLD",
+                           :type         :hold,
+                           :account-num  "40817810108900008075",
+                           :card-num     "510126++++++4656",
+                           :final-date   (time.core/date-time 2017 6 29),
+                           :date         (time.core/date-time 2017 6 29),
+                           :proc-date    (time.core/date-time 2017 6 29),
+                           :final-amount (money.amounts/parse "RUR -14.75"),
+                           :amount       (money.amounts/parse "RUR -14.75")}]}
 
           {:ref          "HOLD",
            :type         :hold,
@@ -249,15 +249,15 @@
            :proc-date    (time.core/date-time 2017 6 29),
            :final-amount (money.amounts/parse "RUR -418.00"),
            :amount       (money.amounts/parse "RUR -418.00")
-           :history [{:ref          "HOLD",
-                      :type         :hold,
-                      :account-num  "40817810108900008075",
-                      :card-num     "548673++++++9034",
-                      :final-date   (time.core/date-time 2017 6 26),
-                      :date         (time.core/date-time 2017 6 26),
-                      :proc-date    (time.core/date-time 2017 6 26),
-                      :final-amount (money.amounts/parse "RUR -418.00"),
-                      :amount       (money.amounts/parse "RUR -418.00")}]}
+           :history      [{:ref          "HOLD",
+                           :type         :hold,
+                           :account-num  "40817810108900008075",
+                           :card-num     "548673++++++9034",
+                           :final-date   (time.core/date-time 2017 6 26),
+                           :date         (time.core/date-time 2017 6 26),
+                           :proc-date    (time.core/date-time 2017 6 26),
+                           :final-amount (money.amounts/parse "RUR -418.00"),
+                           :amount       (money.amounts/parse "RUR -418.00")}]}
 
           {:ref          "CRD_96F0UB",
            :type         :card,
@@ -268,15 +268,15 @@
            :proc-date    (time.core/date-time 2017 6 26),
            :final-amount (money.amounts/parse "RUR 700.00"),
            :amount       (money.amounts/parse "RUR 700.00")
-           :history [{:ref          "CRD_96F0UB",
-                      :type         :card,
-                      :account-num  "40817810108900008075",
-                      :card-num     "548673++++++9034",
-                      :final-date   (time.core/date-time 2017 6 26),
-                      :date         (time.core/date-time 2017 6 26),
-                      :proc-date    (time.core/date-time 2017 6 26),
-                      :final-amount (money.amounts/parse "RUR 700.00"),
-                      :amount       (money.amounts/parse "RUR 700.00")}]}
+           :history      [{:ref          "CRD_96F0UB",
+                           :type         :card,
+                           :account-num  "40817810108900008075",
+                           :card-num     "548673++++++9034",
+                           :final-date   (time.core/date-time 2017 6 26),
+                           :date         (time.core/date-time 2017 6 26),
+                           :proc-date    (time.core/date-time 2017 6 26),
+                           :final-amount (money.amounts/parse "RUR 700.00"),
+                           :amount       (money.amounts/parse "RUR 700.00")}]}
 
           {:ref          "CRD_10V46N",
            :type         :card,
@@ -374,15 +374,15 @@
            :proc-date    (time.core/date-time 2017 6 29),
            :final-amount (money.amounts/parse "RUR -418.00"),
            :amount       (money.amounts/parse "RUR -418.00")
-           :history [{:ref          "HOLD",
-                      :type         :hold,
-                      :account-num  "40817810108900008075",
-                      :card-num     "548673++++++9034",
-                      :final-date   (time.core/date-time 2017 6 26),
-                      :date         (time.core/date-time 2017 6 26),
-                      :proc-date    (time.core/date-time 2017 6 26),
-                      :final-amount (money.amounts/parse "RUR -418.00"),
-                      :amount       (money.amounts/parse "RUR -418.00")}]}
+           :history      [{:ref          "HOLD",
+                           :type         :hold,
+                           :account-num  "40817810108900008075",
+                           :card-num     "548673++++++9034",
+                           :final-date   (time.core/date-time 2017 6 26),
+                           :date         (time.core/date-time 2017 6 26),
+                           :proc-date    (time.core/date-time 2017 6 26),
+                           :final-amount (money.amounts/parse "RUR -418.00"),
+                           :amount       (money.amounts/parse "RUR -418.00")}]}
 
           {:ref          "HOLD",
            :type         :hold,
@@ -393,15 +393,33 @@
            :proc-date    (time.core/date-time 2017 6 26),
            :final-amount (money.amounts/parse "RUR -418.00"),
            :amount       (money.amounts/parse "RUR -418.00")
-           :history [{:ref          "HOLD",
-                      :type         :hold,
-                      :account-num  "40817810108900008075",
-                      :card-num     "548673++++++9034",
-                      :final-date   (time.core/date-time 2017 6 26),
-                      :date         (time.core/date-time 2017 6 26),
-                      :proc-date    (time.core/date-time 2017 6 26),
-                      :final-amount (money.amounts/parse "RUR -418.00"),
-                      :amount       (money.amounts/parse "RUR -418.00")}]}]
+           :history      [{:ref          "HOLD",
+                           :type         :hold,
+                           :account-num  "40817810108900008075",
+                           :card-num     "548673++++++9034",
+                           :final-date   (time.core/date-time 2017 6 26),
+                           :date         (time.core/date-time 2017 6 26),
+                           :proc-date    (time.core/date-time 2017 6 26),
+                           :final-amount (money.amounts/parse "RUR -418.00"),
+                           :amount       (money.amounts/parse "RUR -418.00")}]}
+          {:ref          "CRD_9T48ZB",
+           :type         :card,
+           :account-num  "40817810108900008075",
+           :card-num     "479087++++++4116",
+           :final-date   (time.core/date-time 2017 7 5),
+           :date         (time.core/date-time 2017 7 2),
+           :proc-date    (time.core/date-time 2017 7 5),
+           :final-amount (money.amounts/parse "RUR -3881.53"),
+           :amount       (money.amounts/parse "USD -63.25")
+           :history      [{:ref          "HOLD",
+                           :type         :hold,
+                           :account-num  "40817810108900008075",
+                           :card-num     "479087++++++4116",
+                           :final-date   (time.core/date-time 2017 7 2),
+                           :date         (time.core/date-time 2017 7 2),
+                           :proc-date    (time.core/date-time 2017 7 2),
+                           :final-amount (money.amounts/parse "RUR -3831.53"),
+                           :amount       (money.amounts/parse "USD -63.25")}]}]
 
          (merge-row-lists
            [{:ref          "HOLD",
@@ -421,7 +439,16 @@
              :date         (time.core/date-time 2017 6 26),
              :proc-date    (time.core/date-time 2017 6 26),
              :final-amount (money.amounts/parse "RUR -418.00"),
-             :amount       (money.amounts/parse "RUR -418.00")}]
+             :amount       (money.amounts/parse "RUR -418.00")}
+            {:ref          "HOLD",
+             :type         :hold,
+             :account-num  "40817810108900008075",
+             :card-num     "479087++++++4116",
+             :final-date   (time.core/date-time 2017 7 2),
+             :date         (time.core/date-time 2017 7 2),
+             :proc-date    (time.core/date-time 2017 7 2),
+             :final-amount (money.amounts/parse "RUR -3831.53"),
+             :amount       (money.amounts/parse "USD -63.25")}]
 
            [{:ref          "HOLD",
              :type         :hold,
@@ -440,4 +467,14 @@
              :date         (time.core/date-time 2017 6 26),
              :proc-date    (time.core/date-time 2017 6 29),
              :final-amount (money.amounts/parse "RUR -418.00"),
-             :amount       (money.amounts/parse "RUR -418.00")}]))))
+             :amount       (money.amounts/parse "RUR -418.00")}
+            {:ref          "CRD_9T48ZB",
+             :type         :card,
+             :account-num  "40817810108900008075",
+             :card-num     "479087++++++4116",
+             :final-date   (time.core/date-time 2017 7 5),
+             :date         (time.core/date-time 2017 7 2),
+             :proc-date    (time.core/date-time 2017 7 5),
+             :final-amount (money.amounts/parse "RUR -3881.53"),
+             :amount       (money.amounts/parse "USD -63.25")}]))))
+

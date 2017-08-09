@@ -173,7 +173,13 @@
          "Descr"   description})
       rows)))
 
-(def row-merge-key #(mapv % [:card-num :amount :ref]))
+(defn row-merge-key
+  [row]
+  (let [[card-num amount ref] (mapv row [:card-num :amount :ref])]
+    [card-num
+     (money.amounts/currency-of amount)
+     (money.amounts/minor-of amount)
+     ref]))
 
 (def row-hold-key #(mapv % [:card-num :amount]))
 
@@ -199,9 +205,9 @@
 
 (defn merge-row-lists
   [prev next]
-  (loop [left prev
+  (loop [left  prev
          right (vec (sort-by row-merge-key next))
-         res []]
+         res   []]
     (match
       [left     right   ]
       [[l & lr] [r & rr]] (cond
