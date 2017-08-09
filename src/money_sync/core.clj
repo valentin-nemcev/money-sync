@@ -182,7 +182,6 @@
          "Descr"   description})
       rows)))
 
-(def row-merge-key #(mapv % [:card-num :amount :ref]))
 (def row-merge-key (juxt
                      :card-num
                      (comp money.amounts/currency-of :amount)
