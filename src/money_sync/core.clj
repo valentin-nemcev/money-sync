@@ -213,7 +213,7 @@
   [prev next]
   (loop [left (vec (sort-by row-merge-key prev))
          right (vec (sort-by row-merge-key next))
-         res []]
+         res   []]
     (match
       [left     right   ]
       [[l & lr] [r & rr]] (cond
