@@ -19,7 +19,6 @@
 (. clojure.pprint/simple-dispatch addMethod
    org.joda.money.Money #(print (money.format/format %)))
 
-
 (defn parse-csv-file
   [fname]
   (csv/read-csv (slurp fname :encoding "cp1251") :separator \;))
@@ -182,7 +181,6 @@
          "Descr"   description})
       rows)))
 
-(def row-merge-key #(mapv % [:card-num :amount :ref]))
 (def row-merge-key (juxt
                      :card-num
                      (comp money.amounts/currency-of :amount)
@@ -213,7 +211,7 @@
 
 (defn merge-row-lists
   [prev next]
-  (loop [left prev
+  (loop [left (vec (sort-by row-merge-key prev))
          right (vec (sort-by row-merge-key next))
          res []]
     (match
