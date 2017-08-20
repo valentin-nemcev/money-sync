@@ -171,13 +171,14 @@
   [rows]
   (clojure.pprint/print-table
     (map
-      (fn [{:keys [account-num type ref card-num date final-amount description]}]
+      (fn [{:keys [account-num type ref card-num date amount description history]}]
         {"Account" account-num
          "Type"    type
          "Card"    card-num
          "Date"    (time.format/unparse (time.format/formatter "dd.MM.yy") date)
          "Ref"     ref
-         "Amount"  (and final-amount (money.format/format final-amount))
+         "Amount"  (and amount (money.format/format amount))
+         "History" (string/join " " (map :ref history))
          "Descr"   description})
       rows)))
 
@@ -204,10 +205,14 @@
   [left right]
   (neg? (compare (row-merge-key left) (row-merge-key right))))
 
+(defn flatten-hist
+  [rows]
+  (mapcat #(into [(dissoc % :history)] (% :history)) rows))
+
 (defn add-to-hist
   "Add to history"
   [row & history-rows]
-  (update row :history #(into (or % []) history-rows)))
+  (update row :history #(into (or % []) (flatten-hist history-rows))))
 
 (defn merge-row-lists
   [prev next]
