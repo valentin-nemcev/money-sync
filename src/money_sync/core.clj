@@ -211,12 +211,17 @@
 
 (defn add-to-hist
   "Add to history"
-  [row & history-rows]
-  (update row :history #(into (or % []) (flatten-hist history-rows))))
+  [& history-rows]
+  (let [[row & history] (->> history-rows
+                             flatten-hist
+                             set
+                             (sort-by :final-date)
+                             reverse)]
+    (assoc row :history history)))
 
 (defn merge-row-lists
   [prev next]
-  (loop [left (vec (sort-by row-merge-key prev))
+  (loop [left  (vec (sort-by row-merge-key prev))
          right (vec (sort-by row-merge-key next))
          res   []]
     (match
