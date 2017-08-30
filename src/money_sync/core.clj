@@ -39,7 +39,9 @@
 
 (defn process-card-num
   [row processed]
-  {:card-num (re-find #"\d{6}\+{6}\d{4}" (row "Описание операции"))})
+  (let [card-num (re-find #"\d{6}\+{6}\d{4}" (row "Описание операции"))]
+    {:card-num card-num
+     :proc-desc (string/replace (processed :proc-desc) (or card-num "") "")}))
 
 (defn parse-date
   [fmt str]
@@ -62,7 +64,12 @@
      (map #(or (parse-date fmt %) (processed :final-date))
           [proc-date-str date-str])]
 
-    {:date date :proc-date proc-date}))
+    {:date date
+     :proc-date proc-date
+     :proc-desc (-> processed
+                    :proc-desc
+                    (string/replace (or proc-date-str "") "")
+                    (string/replace (or date-str "") ""))}))
 
 (defn process-final-amount
   [row processed]
@@ -85,7 +92,11 @@
        (processed :final-amount)
        (money.amounts/parse (str currency-str (if negative "-" "") amount-str)))]
 
-    {:amount amount}))
+    {:amount amount
+     :proc-desc (-> processed
+                    :proc-desc
+                    (string/replace (or amount-str "") "")
+                    (string/replace (or currency-str "") ""))}))
 
 (defn process-type
   [row processed]
@@ -104,7 +115,15 @@
 
 (defn process-description
   [row processed]
-  {:description (row "Описание операции")})
+  {:description (row "Описание операции")
+   :proc-desc (row "Описание операции")})
+
+(defn process-proc-description
+  [row processed]
+  {:proc-desc (-> processed
+                  :proc-desc
+                  (string/replace #"\s+" " ")
+                  string/trim)})
 
 
 (defn process-row
@@ -112,14 +131,15 @@
   (reduce
     (fn [res f] (merge res (f row res)))
     {}
-    [process-type
+    [process-description
+     process-type
      process-account-num
      process-card-num
      process-final-date
      process-date
      process-final-amount
      process-amount
-     ; process-description
+     process-proc-description
      ]))
 
 (defn accounts-stat
@@ -175,15 +195,16 @@
   [rows]
   (clojure.pprint/print-table
     (map
-      (fn [{:keys [account-num type ref card-num date amount description history]}]
-        {"Account" account-num
-         "Type"    type
-         "Card"    card-num
-         "Date"    (time.format/unparse (time.format/formatter "dd.MM.yy") date)
-         "Ref"     ref
-         "Amount"  (and amount (money.format/format amount))
-         "History" (string/join " " (map :ref history))
-         "Descr"   description})
+      (fn [{:keys [account-num type ref card-num date amount description proc-desc history]}]
+        {"Account"    account-num
+         "Type"       type
+         "Card"       card-num
+         "Date"       (time.format/unparse (time.format/formatter "dd.MM.yy") date)
+         "Ref"        ref
+         "Amount"     (and amount (money.format/format amount))
+         "History"    (string/join " " (map :ref history))
+         ; "Descr"      description
+         "Proc descr" proc-desc})
       rows)))
 
 (def row-merge-key (juxt
