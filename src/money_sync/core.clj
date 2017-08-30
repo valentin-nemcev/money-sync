@@ -40,8 +40,8 @@
 (defn process-card-num
   [row processed]
   (let [card-num (re-find #"\d{6}\+{6}\d{4}" (row "Описание операции"))]
-    {:card-num card-num
-     :proc-desc (string/replace (processed :proc-desc) (or card-num "") "")}))
+    {:card-num   card-num
+     :proc-descr (string/replace (processed :proc-descr) (or card-num "") "")}))
 
 (defn parse-date
   [fmt str]
@@ -64,12 +64,12 @@
      (map #(or (parse-date fmt %) (processed :final-date))
           [proc-date-str date-str])]
 
-    {:date date
-     :proc-date proc-date
-     :proc-desc (-> processed
-                    :proc-desc
-                    (string/replace (or proc-date-str "") "")
-                    (string/replace (or date-str "") ""))}))
+    {:date       date
+     :proc-date  proc-date
+     :proc-descr (-> processed
+                     :proc-descr
+                     (string/replace (or proc-date-str "") "")
+                     (string/replace (or date-str "") ""))}))
 
 (defn process-final-amount
   [row processed]
@@ -92,11 +92,11 @@
        (processed :final-amount)
        (money.amounts/parse (str currency-str (if negative "-" "") amount-str)))]
 
-    {:amount amount
-     :proc-desc (-> processed
-                    :proc-desc
-                    (string/replace (or amount-str "") "")
-                    (string/replace (or currency-str "") ""))}))
+    {:amount     amount
+     :proc-descr (-> processed
+                     :proc-descr
+                     (string/replace (or amount-str "") "")
+                     (string/replace (or currency-str "") ""))}))
 
 (defn process-type
   [row processed]
@@ -115,15 +115,14 @@
 
 (defn process-description
   [row processed]
-  {:description (row "Описание операции")
-   :proc-desc (row "Описание операции")})
+  {:proc-descr (row "Описание операции")})
 
 (defn process-proc-description
   [row processed]
-  {:proc-desc (-> processed
-                  :proc-desc
-                  (string/replace #"\s+" " ")
-                  string/trim)})
+  {:proc-descr (-> processed
+                   :proc-descr
+                   (string/replace #"\s+" " ")
+                   string/trim)})
 
 
 (defn process-row
@@ -139,8 +138,7 @@
      process-date
      process-final-amount
      process-amount
-     process-proc-description
-     ]))
+     process-proc-description]))
 
 (defn accounts-stat
   [rows]
@@ -203,7 +201,6 @@
          "Ref"        ref
          "Amount"     (and amount (money.format/format amount))
          "History"    (string/join " " (map :ref history))
-         ; "Descr"      description
          "Proc descr" proc-desc})
       rows)))
 

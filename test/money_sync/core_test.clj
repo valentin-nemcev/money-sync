@@ -98,7 +98,8 @@
             :proc-date    (time.core/date-time 2017 5 22)
             :final-date   (time.core/date-time 2017 5 22)
             :final-amount (money.amounts/parse "RUR -952.00")
-            :amount       (money.amounts/parse "RUR -952.00")}
+            :amount       (money.amounts/parse "RUR -952.00")
+            :proc-descr   "10357009 RU PEREKRESTOK SVERDLOVSK>"}
            {:account-num  "40817810807150018598"
             :type         :bank_fee,
             :ref          "MOWV 21705000584"
@@ -107,7 +108,8 @@
             :proc-date    (time.core/date-time 2017 5 21)
             :final-date   (time.core/date-time 2017 5 21)
             :final-amount (money.amounts/parse "RUR -185.25")
-            :amount       (money.amounts/parse "RUR -185.25")}
+            :amount       (money.amounts/parse "RUR -185.25")
+            :proc-descr   "Ком.за пер.с исп.рас.карты ОАО\"АЛЬФА-БАНК \",вып.к Тек.сч.Кл.,на сч.карты стор.банк.Согл.тар.Банка Немцева Юлия Сергеевна"}
            {:account-num  "40817810807150018598"
             :type         :card,
             :ref          "CRD_4XR24Z"
@@ -116,7 +118,8 @@
             :proc-date    (time.core/date-time 2017 5 21)
             :final-date   (time.core/date-time 2017 5 21)
             :final-amount (money.amounts/parse "RUR -1334.00")
-            :amount       (money.amounts/parse "RUR -1334.00")}
+            :amount       (money.amounts/parse "RUR -1334.00")
+            :proc-descr   "10357010\\RUS\\SANKT PETERBU\\PEREKRESTOK S MCC5411"}
            {:account-num  "40817810807150018598"
             :type         :card,
             :ref          "CRD_7U9213"
@@ -125,7 +128,8 @@
             :proc-date    (time.core/date-time 2017 5 21)
             :final-date   (time.core/date-time 2017 5 21)
             :final-amount (money.amounts/parse "RUR -9500.00")
-            :amount       (money.amounts/parse "RUR -9500.00")}
+            :amount       (money.amounts/parse "RUR -9500.00")
+            :proc-descr   "809131\\643\\MOSKVA\\CARD2CARD CLK MCC6012"}
            {:account-num  "40817810807150018598"
             :type         :payment,
             :ref          "C012005170005237"
@@ -134,7 +138,8 @@
             :proc-date    (time.core/date-time 2017 5 20)
             :final-date   (time.core/date-time 2017 5 20)
             :final-amount (money.amounts/parse "RUR -7000.00")
-            :amount       (money.amounts/parse "RUR -7000.00")}
+            :amount       (money.amounts/parse "RUR -7000.00")
+            :proc-descr   "Перевод 01N 45415 2005 40817810108900008075044525593 30101810200000000593"}
            {:account-num  "40817810807150018598"
             :type         :salary,
             :ref          "OP1ED02112339436"
@@ -143,7 +148,8 @@
             :proc-date    (time.core/date-time 2017 5 19)
             :final-date   (time.core/date-time 2017 5 19)
             :final-amount (money.amounts/parse "RUR 15686.20")
-            :amount       (money.amounts/parse "RUR 15686.20")}
+            :amount       (money.amounts/parse "RUR 15686.20")
+            :proc-descr   "Зарплата 01N 1 1905 40817810903001601210044030723 30101810100000000723"}
            {:account-num  "40817810108900008075",
             :type         :card,
             :ref          "CRD_5W12YR"
@@ -152,7 +158,8 @@
             :proc-date    (time.core/date-time 2017 6 10),
             :final-date   (time.core/date-time 2017 6 11),
             :final-amount (money.amounts/parse "RUR -50.00")
-            :amount       (money.amounts/parse "RUR -50.00")}
+            :amount       (money.amounts/parse "RUR -50.00")
+            :proc-descr   "24064401\\RUS\\ARTGORBUNOV R\\ARTGORBUNOV MCC8299"}
            {:account-num  "40817810108900008075",
             :type         :bank_fee,
             :ref          "MOCV 10706000272"
@@ -161,7 +168,8 @@
             :proc-date    (time.core/date-time 2017 6 10),
             :final-date   (time.core/date-time 2017 6 10),
             :final-amount (money.amounts/parse "RUR -30.00")
-            :amount       (money.amounts/parse "RUR -30.00")}
+            :amount       (money.amounts/parse "RUR -30.00")
+            :proc-descr   "Ком.за пер.с исп.рас.карты ОАО\"АЛЬФА-БАНК \",вып.к Тек.сч.Кл.,на сч.карты стор.банк.Согл.тар.Банка Немцев Валентин Николаевич"}
            {:account-num  "40817810108900008075",
             :type         :card,
             :ref          "CRD_72C25V"
@@ -170,7 +178,8 @@
             :proc-date    (time.core/date-time 2017 6 10),
             :final-date   (time.core/date-time 2017 6 10),
             :final-amount (money.amounts/parse "RUR -500.00")
-            :amount       (money.amounts/parse "RUR -500.00")})
+            :amount       (money.amounts/parse "RUR -500.00")
+            :proc-descr   "809131\\643\\MOSKVA\\CARD2CARD CLK MCC6012"})
          (map process-row
               (csv-data->maps (parse-csv-file "./resources/transactions.csv"))))))
 
@@ -183,7 +192,8 @@
           :proc-date    (time.core/date-time 2017 6 10),
           :final-date   (time.core/date-time 2017 6 10),
           :final-amount (money.amounts/parse "RUR 15000.00")
-          :amount       (money.amounts/parse "RUR 15000.00")}
+          :amount       (money.amounts/parse "RUR 15000.00")
+          :proc-descr   ""}
          (process-row
            {"Тип счёта"         "Текущий счёт",
             "Номер счета"       "40817810108900008075",
