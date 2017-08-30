@@ -19,6 +19,10 @@
 (. clojure.pprint/simple-dispatch addMethod
    org.joda.money.Money #(print (money.format/format %)))
 
+(defn p
+  ([str arg] (print str "=> ") (doto arg clojure.pprint/pprint))
+  ([arg] (doto arg clojure.pprint/pprint)))
+
 (defn parse-csv-file
   [fname]
   (csv/read-csv (slurp fname :encoding "cp1251") :separator \;))
@@ -217,7 +221,7 @@
                              set
                              (sort-by :final-date)
                              reverse)]
-    (assoc row :history history)))
+    (assoc row :history (vec history))))
 
 (defn merge-row-lists
   [prev next]
