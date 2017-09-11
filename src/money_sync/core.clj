@@ -193,7 +193,7 @@
   [rows]
   (clojure.pprint/print-table
     (map
-      (fn [{:keys [account-num type ref card-num date amount description proc-desc history]}]
+      (fn [{:keys [account-num type ref card-num date amount description proc-descr history]}]
         {"Account"    account-num
          "Type"       type
          "Card"       card-num
@@ -201,7 +201,7 @@
          "Ref"        ref
          "Amount"     (and amount (money.format/format amount))
          "History"    (string/join " " (map :ref history))
-         "Proc descr" proc-desc})
+         "Proc descr" proc-descr})
       rows)))
 
 (def row-merge-key (juxt
