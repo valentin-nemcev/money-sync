@@ -1,14 +1,12 @@
 (ns money-sync.core
   (:gen-class)
   (:require [clojure.string :as string]
-            [clojure.java.io :as io]
             [clojure.data.csv :as csv]
             [clojure.string :as string]
             [clj-time.core :as time.core]
             [clj-time.format :as time.format]
             [clojurewerkz.money.amounts :as money.amounts]
             [clojurewerkz.money.format :as money.format]
-            [clojure.tools.trace :as trace]
             [clojure.core.match :refer [match]]))
 
 (. clojure.pprint/simple-dispatch addMethod
@@ -47,36 +45,35 @@
   [fmt str]
   (and str (time.format/parse (time.format/formatter fmt) str)))
 
-(defn process-final-date
+(defn process-report-date
   [row processed]
-  {:final-date (parse-date "dd.MM.yy" (row "Дата операции"))})
+  {:report-date (parse-date "dd.MM.yy" (row "Дата операции"))})
 
 (defn process-date
   [row processed]
   (let
+    ; proc-date-str is probably a date when transaction was processed by processing system
     [[match proc-date-str date-str]
      (re-find #"(\d\d\.\d\d\.\d\d) (\d\d\.\d\d\.\d\d)" (row "Описание операции"))
 
      fmt
      (if (= (processed :type) :hold) "yy.MM.dd" "dd.MM.yy")
 
-     [proc-date date]
-     (map #(or (parse-date fmt %) (processed :final-date))
-          [proc-date-str date-str])]
+     date
+     (or (parse-date fmt date-str) (processed :report-date))]
 
     {:date       date
-     :proc-date  proc-date
      :proc-descr (-> processed
                      :proc-descr
                      (string/replace (or proc-date-str "") "")
                      (string/replace (or date-str "") ""))}))
 
-(defn process-final-amount
+(defn process-account-amount
   [row processed]
   (let [currency (row "Валюта")
         income   (Double/parseDouble (string/replace (row "Приход") "," "."))
         outcome  (Double/parseDouble (string/replace (row "Расход") "," "."))]
-    {:final-amount (money.amounts/parse (str currency (- income outcome)))}))
+    {:account-amount (money.amounts/parse (str currency (- income outcome)))}))
 
 (defn process-amount
   [row processed]
@@ -85,11 +82,11 @@
      (re-find #"(\d+\.\d{2})  ?([A-Z]{3})" (row "Описание операции"))
 
      negative
-     (money.amounts/negative? (processed :final-amount))
+     (money.amounts/negative? (processed :account-amount))
 
      amount
      (if (nil? amount-str)
-       (processed :final-amount)
+       (processed :account-amount)
        (money.amounts/parse (str currency-str (if negative "-" "") amount-str)))]
 
     {:amount     amount
@@ -134,9 +131,9 @@
      process-type
      process-account-num
      process-card-num
-     process-final-date
+     process-report-date
      process-date
-     process-final-amount
+     process-account-amount
      process-amount
      process-proc-description]))
 
@@ -150,21 +147,21 @@
               acc
 
               :balance
-              (reduce money.amounts/plus (map :final-amount acc-rows))
+              (reduce money.amounts/plus (map :account-amount acc-rows))
 
               :last-updated-date
-              (reduce time.core/max-date (map :final-date acc-rows))
+              (reduce time.core/max-date (map :report-date acc-rows))
 
               :hold-total-amount
               (if (empty? holds)
                 nil
                 (money.amounts/abs (reduce money.amounts/plus
-                                           (map :final-amount holds))))
+                                           (map :account-amount holds))))
 
               :first-hold-date
               (if (empty? holds)
                 nil
-                (reduce time.core/min-date (map :final-date holds)))})))
+                (reduce time.core/min-date (map :report-date holds)))})))
 
 (defn print-accounts
   [accounts]
@@ -232,12 +229,11 @@
   (mapcat #(into [(dissoc % :history)] (% :history)) rows))
 
 (defn add-to-hist
-  "Add to history"
   [& history-rows]
   (let [[row & history] (->> history-rows
                              flatten-hist
                              set
-                             (sort-by :final-date)
+                             (sort-by :report-date)
                              reverse)]
     (assoc row :history (vec history))))
 
@@ -271,7 +267,7 @@
        (map #(sort-by :ref %))
        flatten
        print-rows))
-       ; (sort-by :final-date)
+       ; (sort-by :report-date)
        ; accounts-stat
        ; print-accounts))
 
